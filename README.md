@@ -1,50 +1,109 @@
-# Welcome to your Expo app 👋
+# LifeManager
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A comprehensive life management app built with React Native and Expo.
 
-## Get started
+## Tech Stack
 
-1. Install dependencies
+### Frontend
+- **React Native + Expo** - Cross-platform mobile framework
+- **React Navigation** - Stack and tab navigation
+- **Zustand** - State management
+- **NativeWind** - Tailwind CSS for React Native
 
-   ```bash
-   npm install
-   ```
+### Backend / Storage
+- **Firebase Auth** - User authentication (login/signup)
+- **Firestore** - NoSQL database for data storage
+- **Cloud Functions** - Backend logic and scheduled tasks
+- **Cloud Messaging** - Push notifications
 
-2. Start the app
+### Push Notifications
+- **Firebase Cloud Messaging** - Cross-platform notifications
+- **Expo Notifications API** - Local and push notifications
 
-   ```bash
-   npx expo start
-   ```
+## Features
 
-In the output, you'll find options to open the app in a
+- 📅 **Calendar** - Manage your schedule and events
+- 📝 **Notes** - Quick note-taking
+- ✅ **Habit Tracker** - Build and maintain habits with streak tracking
+- 💳 **Subscription Manager** - Track recurring subscriptions
+- ☑️ **Task Manager** - Todo list with completion tracking
+- 💰 **Budget Tracker** - Monitor expenses and budget
+- 💧 **Water Tracker** - Daily hydration monitoring
+- 💊 **Medicine Reminder** - Never miss your medications
+- 🤔 **Daily Question** - Daily reflection prompts
+- 👤 **Profile** - User settings and preferences
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Project Structure
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+/src
+  /components          # Reusable UI components
+    /Calendar
+    /Notes
+    /Habit
+    /Subscription
+    /Tasks
+    /Budget
+    /WaterTracker
+    /Medicine
+    /DailyQuestion
+  /screens            # App screens
+  /navigation         # Navigation configuration
+  /store             # Zustand state stores
+  /services          # External service integrations
+  /utils            # Helper functions
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Getting Started
 
-## Learn more
+### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn
+- Expo CLI
+- iOS Simulator (Mac) or Android Emulator
 
-To learn more about developing your project with Expo, look at the following resources:
+### Installation
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+1. Install dependencies:
+```bash
+npm install
+```
 
-## Join the community
+2. Configure Firebase:
+   - Create a Firebase project at [https://console.firebase.google.com](https://console.firebase.google.com)
+   - Enable Authentication, Firestore, and Cloud Messaging
+   - Download your Firebase config
+   - Update `src/services/firebase.js` with your Firebase credentials
 
-Join our community of developers creating universal apps.
+3. Start the development server:
+```bash
+npx expo start
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+4. Run on your device:
+   - Press `i` for iOS simulator
+   - Press `a` for Android emulator
+   - Scan QR code with Expo Go app on your physical device
+
+## Firebase Setup
+
+1. **Authentication**: Enable Email/Password authentication in Firebase Console
+2. **Firestore**: Create collections for users, habits, tasks, subscriptions, notes, budget, water, medicine
+3. **Cloud Messaging**: Configure FCM for push notifications
+
+## Development
+
+### Available Scripts
+
+- `npm start` - Start Expo development server
+- `npm run android` - Run on Android
+- `npm run ios` - Run on iOS
+- `npm run web` - Run on web browser
+
+### State Management
+
+The app uses Zustand for state management. Store files are located in `/src/store/`
+
+## License
+
+This project is licensed under the MIT License.
