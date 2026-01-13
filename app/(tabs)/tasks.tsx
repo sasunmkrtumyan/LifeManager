@@ -1,11 +1,11 @@
-import { ScrollView, Text, View, TouchableOpacity } from "react-native";
-import { useEffect, useState } from "react";
-import { User } from "firebase/auth";
-import useTaskStore from "@/src/store/taskStore";
-import { getCurrentUser, signInAnon, onAuthChange } from "@/src/services/auth";
-import TaskCard from "@/src/components/Task/TaskCard";
-import AddTaskModal from "@/src/components/Task/AddTaskModal";
 import Button from "@/src/components/Shared/Button";
+import AddTaskModal from "@/src/components/Task/AddTaskModal";
+import TaskCard from "@/src/components/Task/TaskCard";
+import { getCurrentUser, onAuthChange, signInAnon } from "@/src/services/auth";
+import useTaskStore from "@/src/store/taskStore";
+import { User } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 type FilterType = "all" | "active" | "completed" | "overdue";
 
@@ -13,7 +13,7 @@ interface Task {
   id: string;
   title: string;
   description?: string;
-  priority: 'low' | 'medium' | 'high' | 'urgent';
+  priority: "low" | "medium" | "high" | "urgent";
   dueDate?: Date | string;
   completed: boolean;
 }
@@ -56,15 +56,21 @@ export default function TasksScreen() {
     };
   }, []);
 
-  const filteredTasks = tasks.filter((task: { id: string; completed: boolean; dueDate?: Date | string | null }) => {
-    if (filter === "active") return !task.completed;
-    if (filter === "completed") return task.completed;
-    if (filter === "overdue") {
-      const overdue = getOverdueTasks();
-      return overdue.some((t: { id: string }) => t.id === task.id);
+  const filteredTasks = tasks.filter(
+    (task: {
+      id: string;
+      completed: boolean;
+      dueDate?: Date | string | null;
+    }) => {
+      if (filter === "active") return !task.completed;
+      if (filter === "completed") return task.completed;
+      if (filter === "overdue") {
+        const overdue = getOverdueTasks();
+        return overdue.some((t: { id: string }) => t.id === task.id);
+      }
+      return true;
     }
-    return true;
-  });
+  );
 
   const handleEdit = (task: Task) => {
     setEditingTask(task);
@@ -92,27 +98,29 @@ export default function TasksScreen() {
 
         {/* Filters */}
         <View className="flex-row mb-4">
-          {(["all", "active", "completed", "overdue"] as FilterType[]).map((f) => (
-            <TouchableOpacity
-              key={f}
-              onPress={() => setFilter(f)}
-              className={`px-4 py-2 rounded-lg mr-2 ${
-                filter === f
-                  ? "bg-blue-600 dark:bg-blue-500"
-                  : "bg-white dark:bg-gray-800"
-              }`}
-            >
-              <Text
-                className={`capitalize ${
+          {(["all", "active", "completed", "overdue"] as FilterType[]).map(
+            (f) => (
+              <TouchableOpacity
+                key={f}
+                onPress={() => setFilter(f)}
+                className={`px-4 py-2 rounded-lg mr-2 ${
                   filter === f
-                    ? "text-white"
-                    : "text-gray-700 dark:text-gray-300"
+                    ? "bg-blue-600 dark:bg-blue-500"
+                    : "bg-white dark:bg-gray-800"
                 }`}
               >
-                {f}
-              </Text>
-            </TouchableOpacity>
-          ))}
+                <Text
+                  className={`capitalize ${
+                    filter === f
+                      ? "text-white"
+                      : "text-gray-700 dark:text-gray-300"
+                  }`}
+                >
+                  {f}
+                </Text>
+              </TouchableOpacity>
+            )
+          )}
         </View>
 
         <ScrollView>
@@ -124,10 +132,7 @@ export default function TasksScreen() {
             </View>
           ) : (
             filteredTasks.map((task: Task) => (
-              <TouchableOpacity
-                key={task.id}
-                onPress={() => handleEdit(task)}
-              >
+              <TouchableOpacity key={task.id} onPress={() => handleEdit(task)}>
                 <TaskCard task={task} />
               </TouchableOpacity>
             ))

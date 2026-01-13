@@ -1,4 +1,3 @@
-import "./global.css";
 import {
   DarkTheme,
   DefaultTheme,
@@ -6,12 +5,13 @@ import {
 } from "@react-navigation/native";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import "react-native-reanimated";
 import { useEffect } from "react";
+import "react-native-reanimated";
+import "./global.css";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { AuthProvider, useAuth } from "@/src/contexts/AuthContext";
-import { View, ActivityIndicator } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -75,14 +75,8 @@ function RootNavigator() {
           name="habits"
           options={{ presentation: "card", title: "Habits" }}
         />
-        <Stack.Screen
-          name="login"
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="register"
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+        <Stack.Screen name="register" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

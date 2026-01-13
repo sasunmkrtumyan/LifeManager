@@ -1,6 +1,5 @@
-import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import useSubscriptionStore from '../store/subscriptionStore';
+import { ScrollView, Text, View } from "react-native";
+import useSubscriptionStore from "../store/subscriptionStore";
 
 export default function SubscriptionScreen() {
   const { subscriptions } = useSubscriptionStore();
@@ -15,7 +14,9 @@ export default function SubscriptionScreen() {
           subscriptions.map((sub) => (
             <View key={sub.id} className="p-4 mb-2 bg-gray-100 rounded-lg">
               <Text className="text-lg font-semibold">{sub.name}</Text>
-              <Text className="text-gray-600">${sub.amount} / {sub.billingCycle}</Text>
+              <Text className="text-gray-600">
+                ${sub.amount} / {sub.billingCycle}
+              </Text>
             </View>
           ))
         )}

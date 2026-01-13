@@ -1,20 +1,19 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 // Import screens
-import HomeScreen from '../screens/HomeScreen';
-import HabitScreen from '../screens/HabitScreen';
-import SubscriptionScreen from '../screens/SubscriptionScreen';
-import TaskScreen from '../screens/TaskScreen';
-import NotesScreen from '../screens/NotesScreen';
-import CalendarScreen from '../screens/CalendarScreen';
-import BudgetScreen from '../screens/BudgetScreen';
-import WaterScreen from '../screens/WaterScreen';
-import MedicineScreen from '../screens/MedicineScreen';
-import DailyQuestionScreen from '../screens/DailyQuestionScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import BudgetScreen from "../screens/BudgetScreen";
+import CalendarScreen from "../screens/CalendarScreen";
+import DailyQuestionScreen from "../screens/DailyQuestionScreen";
+import HabitScreen from "../screens/HabitScreen";
+import HomeScreen from "../screens/HomeScreen";
+import MedicineScreen from "../screens/MedicineScreen";
+import NotesScreen from "../screens/NotesScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import SubscriptionScreen from "../screens/SubscriptionScreen";
+import TaskScreen from "../screens/TaskScreen";
+import WaterScreen from "../screens/WaterScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -24,8 +23,8 @@ function MainTabs() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#2563eb',
-        tabBarInactiveTintColor: '#6b7280',
+        tabBarActiveTintColor: "#2563eb",
+        tabBarInactiveTintColor: "#6b7280",
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
@@ -41,9 +40,9 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen 
-          name="MainTabs" 
-          component={MainTabs} 
+        <Stack.Screen
+          name="MainTabs"
+          component={MainTabs}
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Subscriptions" component={SubscriptionScreen} />

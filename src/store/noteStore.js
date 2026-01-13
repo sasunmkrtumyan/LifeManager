@@ -1,6 +1,13 @@
-import { create } from 'zustand';
-import { getUserCollectionPath, subscribeToCollection, addDocument, updateDocument, deleteDocument, timestampToDate } from '../utils/firestoreHelpers';
-import { getCurrentUser } from '../services/auth';
+import { create } from "zustand";
+import { getCurrentUser } from "../services/auth";
+import {
+  addDocument,
+  deleteDocument,
+  getUserCollectionPath,
+  subscribeToCollection,
+  timestampToDate,
+  updateDocument,
+} from "../utils/firestoreHelpers";
 
 const useNoteStore = create((set, get) => ({
   notes: [],
@@ -15,13 +22,13 @@ const useNoteStore = create((set, get) => ({
       existingUnsubscribe();
     }
 
-    const collectionPath = getUserCollectionPath(userId, 'notes');
+    const collectionPath = getUserCollectionPath(userId, "notes");
     const unsubscribe = subscribeToCollection(
       collectionPath,
       [],
-      { field: 'createdAt', direction: 'desc' },
+      { field: "createdAt", direction: "desc" },
       (notes) => {
-        const processedNotes = notes.map(note => ({
+        const processedNotes = notes.map((note) => ({
           ...note,
           createdAt: timestampToDate(note.createdAt),
           updatedAt: timestampToDate(note.updatedAt),
@@ -43,18 +50,18 @@ const useNoteStore = create((set, get) => ({
 
   addNote: async (noteData) => {
     const user = getCurrentUser();
-    if (!user) throw new Error('User not authenticated');
+    if (!user) throw new Error("User not authenticated");
 
     set({ loading: true });
     try {
-      const collectionPath = getUserCollectionPath(user.uid, 'notes');
+      const collectionPath = getUserCollectionPath(user.uid, "notes");
       const noteId = await addDocument(collectionPath, {
         title: noteData.title,
-        content: noteData.content || '',
+        content: noteData.content || "",
       });
       return noteId;
     } catch (error) {
-      console.error('Error adding note:', error);
+      console.error("Error adding note:", error);
       throw error;
     } finally {
       set({ loading: false });
@@ -63,17 +70,17 @@ const useNoteStore = create((set, get) => ({
 
   updateNote: async (id, updatedNote) => {
     const user = getCurrentUser();
-    if (!user) throw new Error('User not authenticated');
+    if (!user) throw new Error("User not authenticated");
 
     set({ loading: true });
     try {
-      const collectionPath = getUserCollectionPath(user.uid, 'notes');
+      const collectionPath = getUserCollectionPath(user.uid, "notes");
       await updateDocument(collectionPath, id, {
         title: updatedNote.title,
         content: updatedNote.content,
       });
     } catch (error) {
-      console.error('Error updating note:', error);
+      console.error("Error updating note:", error);
       throw error;
     } finally {
       set({ loading: false });
@@ -82,14 +89,14 @@ const useNoteStore = create((set, get) => ({
 
   deleteNote: async (id) => {
     const user = getCurrentUser();
-    if (!user) throw new Error('User not authenticated');
+    if (!user) throw new Error("User not authenticated");
 
     set({ loading: true });
     try {
-      const collectionPath = getUserCollectionPath(user.uid, 'notes');
+      const collectionPath = getUserCollectionPath(user.uid, "notes");
       await deleteDocument(collectionPath, id);
     } catch (error) {
-      console.error('Error deleting note:', error);
+      console.error("Error deleting note:", error);
       throw error;
     } finally {
       set({ loading: false });

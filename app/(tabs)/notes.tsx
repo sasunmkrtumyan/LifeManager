@@ -1,12 +1,12 @@
-import { ScrollView, Text, View, TouchableOpacity, TextInput } from "react-native";
-import { useEffect, useState } from "react";
+import AddNoteModal from "@/src/components/Notes/AddNoteModal";
+import NoteCard from "@/src/components/Notes/NoteCard";
+import Button from "@/src/components/Shared/Button";
+import { getCurrentUser, onAuthChange, signInAnon } from "@/src/services/auth";
+import useNoteStore from "@/src/store/noteStore";
 import { useRouter } from "expo-router";
 import { User } from "firebase/auth";
-import useNoteStore from "@/src/store/noteStore";
-import { getCurrentUser, signInAnon, onAuthChange } from "@/src/services/auth";
-import NoteCard from "@/src/components/Notes/NoteCard";
-import AddNoteModal from "@/src/components/Notes/AddNoteModal";
-import Button from "@/src/components/Shared/Button";
+import { useEffect, useState } from "react";
+import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 
 interface Note {
   id: string;
@@ -22,7 +22,7 @@ export default function NotesScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
 
-  const { notes, init, cleanup } = useNoteStore();
+  const { notes, init, cleanup, deleteNote } = useNoteStore();
 
   useEffect(() => {
     const initialize = async () => {
@@ -65,6 +65,10 @@ export default function NotesScreen() {
     setModalVisible(true);
   };
 
+  const handleDelete = (note: Note) => {
+    deleteNote(note.id);
+  };
+
   const handleCloseModal = () => {
     setModalVisible(false);
     setEditingNote(null);
@@ -96,17 +100,20 @@ export default function NotesScreen() {
           {filteredNotes.length === 0 ? (
             <View className="items-center justify-center py-12">
               <Text className="text-gray-500 dark:text-gray-400 text-center">
-                {searchQuery ? "No notes found" : "No notes yet. Create your first note!"}
+                {searchQuery
+                  ? "No notes found"
+                  : "No notes yet. Create your first note!"}
               </Text>
             </View>
           ) : (
             filteredNotes.map((note: Note) => (
-              <TouchableOpacity
-                key={note.id}
-                onPress={() => handleEdit(note)}
-              >
-                <NoteCard note={{ ...note, createdAt: note.createdAt || new Date() }} />
-              </TouchableOpacity>
+              <Pressable key={note.id}>
+                <NoteCard
+                  onPress={() => handleEdit(note)}
+                  handleDelete={handleDelete}
+                  note={{ ...note, createdAt: note.createdAt || new Date() }}
+                />
+              </Pressable>
             ))
           )}
         </ScrollView>

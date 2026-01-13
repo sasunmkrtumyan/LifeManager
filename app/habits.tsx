@@ -1,12 +1,12 @@
-import { ScrollView, Text, View, TouchableOpacity } from "react-native";
-import { useEffect, useState } from "react";
+import AddHabitModal from "@/src/components/Habit/AddHabitModal";
+import HabitCard from "@/src/components/Habit/HabitCard";
+import Button from "@/src/components/Shared/Button";
+import { getCurrentUser, onAuthChange, signInAnon } from "@/src/services/auth";
+import useHabitStore from "@/src/store/habitStore";
 import { useRouter } from "expo-router";
 import { User } from "firebase/auth";
-import useHabitStore from "@/src/store/habitStore";
-import { getCurrentUser, signInAnon, onAuthChange } from "@/src/services/auth";
-import HabitCard from "@/src/components/Habit/HabitCard";
-import AddHabitModal from "@/src/components/Habit/AddHabitModal";
-import Button from "@/src/components/Shared/Button";
+import { useEffect, useState } from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 interface Habit {
   id: string;
@@ -98,6 +98,7 @@ export default function HabitsScreen() {
       </View>
 
       <AddHabitModal
+        key={editingHabit ? editingHabit.id : "new-habit"}
         visible={modalVisible}
         onClose={handleCloseModal}
         habit={editingHabit || undefined}

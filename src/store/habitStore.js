@@ -1,8 +1,18 @@
-import { create } from 'zustand';
-import { getUserCollectionPath, subscribeToCollection, addDocument, updateDocument, deleteDocument, timestampToDate } from '../utils/firestoreHelpers';
-import { scheduleHabitReminder, cancelItemNotification } from '../services/notifications';
-import { calculateStreak } from '../utils/dateHelpers';
-import { getCurrentUser } from '../services/auth';
+import { create } from "zustand";
+import { getCurrentUser } from "../services/auth";
+import {
+  cancelItemNotification,
+  scheduleHabitReminder,
+} from "../services/notifications";
+import { calculateStreak } from "../utils/dateHelpers";
+import {
+  addDocument,
+  deleteDocument,
+  getUserCollectionPath,
+  subscribeToCollection,
+  timestampToDate,
+  updateDocument,
+} from "../utils/firestoreHelpers";
 
 const useHabitStore = create((set, get) => ({
   habits: [],
@@ -19,21 +29,23 @@ const useHabitStore = create((set, get) => ({
       existingUnsubscribe();
     }
 
-    const collectionPath = getUserCollectionPath(userId, 'habits');
+    const collectionPath = getUserCollectionPath(userId, "habits");
     const unsubscribe = subscribeToCollection(
       collectionPath,
       [],
-      { field: 'createdAt', direction: 'desc' },
+      { field: "createdAt", direction: "desc" },
       (habits) => {
         // Convert Firestore timestamps to dates
-        const processedHabits = habits.map(habit => ({
+        const processedHabits = habits.map((habit) => ({
           ...habit,
           createdAt: timestampToDate(habit.createdAt),
           updatedAt: timestampToDate(habit.updatedAt),
-          reminderTime: habit.reminderTime ? {
-            hour: habit.reminderTime.hour,
-            minute: habit.reminderTime.minute,
-          } : null,
+          reminderTime: habit.reminderTime
+            ? {
+                hour: habit.reminderTime.hour,
+                minute: habit.reminderTime.minute,
+              }
+            : null,
         }));
         set({ habits: processedHabits });
       }
@@ -54,15 +66,15 @@ const useHabitStore = create((set, get) => ({
   // Add habit
   addHabit: async (habitData) => {
     const user = getCurrentUser();
-    if (!user) throw new Error('User not authenticated');
+    if (!user) throw new Error("User not authenticated");
 
     set({ loading: true });
     try {
-      const collectionPath = getUserCollectionPath(user.uid, 'habits');
+      const collectionPath = getUserCollectionPath(user.uid, "habits");
       const habitId = await addDocument(collectionPath, {
         name: habitData.name,
-        category: habitData.category || 'General',
-        frequency: habitData.frequency || 'daily',
+        category: habitData.category || "General",
+        frequency: habitData.frequency || "daily",
         reminderTime: habitData.reminderTime || null,
         completedDates: [],
       });
@@ -79,7 +91,7 @@ const useHabitStore = create((set, get) => ({
 
       return habitId;
     } catch (error) {
-      console.error('Error adding habit:', error);
+      console.error("Error adding habit:", error);
       throw error;
     } finally {
       set({ loading: false });
@@ -89,21 +101,21 @@ const useHabitStore = create((set, get) => ({
   // Update habit
   updateHabit: async (id, updatedHabit) => {
     const user = getCurrentUser();
-    if (!user) throw new Error('User not authenticated');
+    if (!user) throw new Error("User not authenticated");
 
     set({ loading: true });
     try {
-      const collectionPath = getUserCollectionPath(user.uid, 'habits');
+      const collectionPath = getUserCollectionPath(user.uid, "habits");
       await updateDocument(collectionPath, id, {
         name: updatedHabit.name,
-        category: updatedHabit.category,
-        frequency: updatedHabit.frequency,
-        reminderTime: updatedHabit.reminderTime,
+        category: updatedHabit.category || "General",
+        frequency: updatedHabit.frequency || "daily",
+        reminderTime: updatedHabit.reminderTime || null,
       });
 
       // Update notification if reminder time changed
       if (updatedHabit.reminderTime) {
-        await cancelItemNotification('habit', id);
+        await cancelItemNotification("habit", id);
         await scheduleHabitReminder(
           id,
           updatedHabit.name,
@@ -112,7 +124,7 @@ const useHabitStore = create((set, get) => ({
         );
       }
     } catch (error) {
-      console.error('Error updating habit:', error);
+      console.error("Error updating habit:", error);
       throw error;
     } finally {
       set({ loading: false });
@@ -122,17 +134,17 @@ const useHabitStore = create((set, get) => ({
   // Delete habit
   deleteHabit: async (id) => {
     const user = getCurrentUser();
-    if (!user) throw new Error('User not authenticated');
+    if (!user) throw new Error("User not authenticated");
 
     set({ loading: true });
     try {
-      const collectionPath = getUserCollectionPath(user.uid, 'habits');
+      const collectionPath = getUserCollectionPath(user.uid, "habits");
       await deleteDocument(collectionPath, id);
-      
+
       // Cancel notification
-      await cancelItemNotification('habit', id);
+      await cancelItemNotification("habit", id);
     } catch (error) {
-      console.error('Error deleting habit:', error);
+      console.error("Error deleting habit:", error);
       throw error;
     } finally {
       set({ loading: false });
@@ -142,28 +154,29 @@ const useHabitStore = create((set, get) => ({
   // Toggle habit completion for a date
   toggleHabitCompletion: async (id, date) => {
     const user = getCurrentUser();
-    if (!user) throw new Error('User not authenticated');
+    if (!user) throw new Error("User not authenticated");
 
     const { habits } = get();
-    const habit = habits.find(h => h.id === id);
+    const habit = habits.find((h) => h.id === id);
     if (!habit) return;
 
     const completedDates = habit.completedDates || [];
-    const dateStr = typeof date === 'string' ? date : date.toISOString().split('T')[0];
+    const dateStr =
+      typeof date === "string" ? date : date.toISOString().split("T")[0];
     const dateExists = completedDates.includes(dateStr);
 
     const newCompletedDates = dateExists
-      ? completedDates.filter(d => d !== dateStr)
+      ? completedDates.filter((d) => d !== dateStr)
       : [...completedDates, dateStr];
 
     set({ loading: true });
     try {
-      const collectionPath = getUserCollectionPath(user.uid, 'habits');
+      const collectionPath = getUserCollectionPath(user.uid, "habits");
       await updateDocument(collectionPath, id, {
         completedDates: newCompletedDates,
       });
     } catch (error) {
-      console.error('Error toggling habit completion:', error);
+      console.error("Error toggling habit completion:", error);
       throw error;
     } finally {
       set({ loading: false });
@@ -173,7 +186,7 @@ const useHabitStore = create((set, get) => ({
   // Get habit streak
   getHabitStreak: (id) => {
     const { habits } = get();
-    const habit = habits.find(h => h.id === id);
+    const habit = habits.find((h) => h.id === id);
     if (!habit) return 0;
     return calculateStreak(habit.completedDates || []);
   },
@@ -181,9 +194,9 @@ const useHabitStore = create((set, get) => ({
   // Check if habit is completed today
   isCompletedToday: (id) => {
     const { habits } = get();
-    const habit = habits.find(h => h.id === id);
+    const habit = habits.find((h) => h.id === id);
     if (!habit) return false;
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     return (habit.completedDates || []).includes(today);
   },
 }));

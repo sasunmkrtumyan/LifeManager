@@ -1,14 +1,14 @@
-import { ScrollView, Text, View, TouchableOpacity } from "react-native";
-import { useEffect, useState } from "react";
+import Button from "@/src/components/Shared/Button";
+import Card from "@/src/components/Shared/Card";
+import Input from "@/src/components/Shared/Input";
+import Modal from "@/src/components/Shared/Modal";
+import SubscriptionCard from "@/src/components/Subscription/SubscriptionCard";
+import { getCurrentUser, onAuthChange, signInAnon } from "@/src/services/auth";
+import useSubscriptionStore from "@/src/store/subscriptionStore";
 import { useRouter } from "expo-router";
 import { User } from "firebase/auth";
-import useSubscriptionStore from "@/src/store/subscriptionStore";
-import { getCurrentUser, signInAnon, onAuthChange } from "@/src/services/auth";
-import SubscriptionCard from "@/src/components/Subscription/SubscriptionCard";
-import Card from "@/src/components/Shared/Card";
-import Button from "@/src/components/Shared/Button";
-import Modal from "@/src/components/Shared/Modal";
-import Input from "@/src/components/Shared/Input";
+import { useEffect, useState } from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 interface Subscription {
   id: string;
@@ -25,9 +25,20 @@ export default function SubscriptionScreen() {
   const [editingSub, setEditingSub] = useState<Subscription | null>(null);
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
+    "monthly"
+  );
 
-  const { subscriptions, init, cleanup, addSubscription, updateSubscription, deleteSubscription, getTotalMonthlyExpense, loading } = useSubscriptionStore();
+  const {
+    subscriptions,
+    init,
+    cleanup,
+    addSubscription,
+    updateSubscription,
+    deleteSubscription,
+    getTotalMonthlyExpense,
+    loading,
+  } = useSubscriptionStore();
 
   useEffect(() => {
     const initialize = async () => {
@@ -82,7 +93,7 @@ export default function SubscriptionScreen() {
       setBillingCycle("monthly");
       setEditingSub(null);
     } catch (error) {
-      console.error('Error saving subscription:', error);
+      console.error("Error saving subscription:", error);
     }
   };
 
@@ -98,7 +109,7 @@ export default function SubscriptionScreen() {
     try {
       await deleteSubscription(id);
     } catch (error) {
-      console.error('Error deleting subscription:', error);
+      console.error("Error deleting subscription:", error);
     }
   };
 
@@ -140,13 +151,20 @@ export default function SubscriptionScreen() {
             subscriptions.map((sub: Subscription) => (
               <View key={sub.id}>
                 <TouchableOpacity onPress={() => handleEdit(sub)}>
-                  <SubscriptionCard subscription={{ ...sub, nextPaymentDate: sub.nextPaymentDate || new Date() }} />
+                  <SubscriptionCard
+                    subscription={{
+                      ...sub,
+                      nextPaymentDate: sub.nextPaymentDate || new Date(),
+                    }}
+                  />
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => handleDelete(sub.id)}
                   className="ml-auto mb-2"
                 >
-                  <Text className="text-red-600 dark:text-red-400 text-sm">Delete</Text>
+                  <Text className="text-red-600 dark:text-red-400 text-sm">
+                    Delete
+                  </Text>
                 </TouchableOpacity>
               </View>
             ))
