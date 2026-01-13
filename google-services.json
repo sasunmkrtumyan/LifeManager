@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "363077813616",
+    "project_id": "lifemanager-d976b",
+    "storage_bucket": "lifemanager-d976b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:363077813616:android:133175cfc1ea97ad093bb5",
+        "android_client_info": {
+          "package_name": "lifemanager.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "363077813616-heombge2bjf4e6fh8852uutmdokovdkt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "lifemanager.app",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "363077813616-jum0aocsbjcdpq6o8f4617m47p9monvb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "lifemanager.app",
+            "certificate_hash": "a45623b6398becc8a3e99ea4fb68176e9ce39a37"
+          }
+        },
+        {
+          "client_id": "363077813616-259sig0odkdbd66oo6refsoib0unhjl7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7hyTdOaL4JeMeo-J1XKpxXeRL6DgaQ4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "363077813616-259sig0odkdbd66oo6refsoib0unhjl7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

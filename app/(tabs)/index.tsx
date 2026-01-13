@@ -16,9 +16,7 @@ import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 export default function HomeScreen() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
-  console.log("user: ", user);
   const [initialized, setInitialized] = useState(false);
-  console.log("initialized: ", initialized);
 
   const { habits, init: initHabits, cleanup: cleanupHabits } = useHabitStore();
   const {

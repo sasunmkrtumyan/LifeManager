@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 import { User } from "firebase/auth";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { getCurrentUser, signInAnon, signOutUser, onAuthChange } from "@/src/services/auth";
+import { getCurrentUser, signOutUser, onAuthChange } from "@/src/services/auth";
 import Card from "@/src/components/Shared/Card";
 import Button from "@/src/components/Shared/Button";
 
@@ -26,9 +26,7 @@ export default function ProfileScreen() {
   const handleLogout = async () => {
     try {
       await signOutUser();
-      // Sign back in anonymously
-      const newUser = await signInAnon();
-      setUser(newUser);
+      router.replace('/login');
     } catch (error) {
       console.error('Error logging out:', error);
     }
