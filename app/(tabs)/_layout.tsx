@@ -8,7 +8,7 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useColorScheme();
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -29,15 +29,38 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="explore"
+          name="notes"
           options={{
-            title: "Habits",
+            title: "Notes",
             tabBarIcon: ({ color }) => (
-              <IconSymbol
-                size={28}
-                name="checkmark.circle.fill"
-                color={color}
-              />
+              <IconSymbol size={28} name="note.text" color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="calendar"
+          options={{
+            title: "Calendar",
+            tabBarIcon: ({ color }) => (
+              <IconSymbol size={28} name="calendar" color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="tasks"
+          options={{
+            title: "Tasks",
+            tabBarIcon: ({ color }) => (
+              <IconSymbol size={28} name="checklist" color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: "Profile",
+            tabBarIcon: ({ color }) => (
+              <IconSymbol size={28} name="person.fill" color={color} />
             ),
           }}
         />
