@@ -20,7 +20,6 @@ export default function NoteCard({
   handleDelete,
 }: NoteCardProps) {
   const [showPreview, setShowPreview] = useState(false);
-
   const preview = note.content?.substring(0, 100) || "";
   const hasMore = note.content && note.content.length > 100;
 

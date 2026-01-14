@@ -6,7 +6,14 @@ import useNoteStore from "@/src/store/noteStore";
 import { useRouter } from "expo-router";
 import { User } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import {
+  Alert,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
 interface Note {
   id: string;
@@ -65,8 +72,23 @@ export default function NotesScreen() {
     setModalVisible(true);
   };
 
-  const handleDelete = (note: Note) => {
-    deleteNote(note.id);
+  const handleDelete = (id: string) => {
+    Alert.alert(
+      "Delete note",
+      "Are you sure you want to delete this note? This action cannot be undone.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => deleteNote(id),
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   const handleCloseModal = () => {
@@ -110,7 +132,7 @@ export default function NotesScreen() {
               <Pressable key={note.id}>
                 <NoteCard
                   onPress={() => handleEdit(note)}
-                  handleDelete={handleDelete}
+                  handleDelete={handleDelete(note.id)}
                   note={{ ...note, createdAt: note.createdAt || new Date() }}
                 />
               </Pressable>
